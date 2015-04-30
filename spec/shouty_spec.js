@@ -13,24 +13,32 @@ describe("Shouty", function () {
     var person;
 
     beforeEach(function () {
-      person = new Person();
+      var network = Network();
+		person = new Person(network);
+		network.
     });
 
-    it("can be instantiated", function () {
+    it ("can be instantiated", function () {
       expect(person).to.be.instanceof(Person);
     });
 
     describe("#shout", function () {
-      it("is a method", function () {
+      it ("is a method", function () {
         expect(person).to.respondTo('shout');
       });
 
-      it("calls back", function () {
+	  it ("tells network", function () {
+		  var callback = sinon.spy();
+		  network.broadcast = sinon.spy();
+		  person.shout("a msg", callback);
+		  expect(network.broadcast).to.have.been.calledWith("a msg",callback);
+	  })
+
+      it ("calls back", function () {
         var callback = sinon.spy();
         person.shout("a message", callback);
         expect(callback).to.have.been.called;
       });
     });
-
   });
 });
